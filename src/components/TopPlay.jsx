@@ -30,17 +30,20 @@ const TopChartCard = ({
         src={song?.attributes?.artwork?.url}
         alt={song?.attributes?.name}
       />
+      <div className="flex-1 flex flex-col justify-center mx-3">
+        <Link to={`/songs/${song?.id}`}>
+          <p className="text-xl font-bold text-white">
+            {song?.attributes?.name}
+          </p>
+        </Link>
+        <Link to={`/songs/${song?.relationships?.artists?.data[0]?.id}`}>
+          <p className="text-base font-bold text-gray-300 mt-1">
+            {song?.attributes?.artistName}
+          </p>
+        </Link>
+      </div>
     </div>
-    <div className="flex-1 flex flex-col justify-center mx-3">
-      <Link to={`/songs/${song?.id}`}>
-        <p className="text-xl font-bold text-white">{song?.attributes?.name}</p>
-      </Link>
-      <Link to={`/songs/${song?.relationships?.artists?.data[0]?.id}`}>
-        <p className="text-base font-bold text-gray-300 mt-1">
-          {song?.attributes?.artistName}
-        </p>
-      </Link>
-    </div>
+
     <PlayPause
       isPlaying={isPlaying}
       activeSong={activeSong}
