@@ -8,11 +8,6 @@ const options = {
   },
 };
 
-fetch("https://shazam-core.p.rapidapi.com/v1", options)
-  .then((response) => response.json())
-  .then((response) => console.log(response))
-  .catch((err) => console.error(err));
-
 export const shazamCoreApi = createApi({
   reducerPath: "shazamCoreApi",
   baseQuery: fetchBaseQuery({
@@ -31,7 +26,35 @@ export const shazamCoreApi = createApi({
     getTopCharts: builder.query({
       query: () => "/charts/world?country_code=DZ",
     }),
+    getSongDetails: builder.query({
+      query: ({ songid }) => `/tracks/details?track_id=${songid}`,
+    }),
+    getSongRelated: builder.query({
+      query: ({ songid }) => `/tracks/related?track_id=${songid}`,
+    }),
   }),
 });
 
-export const { useGetTopChartsQuery } = shazamCoreApi;
+export const shazamCoreApiV2 = createApi({
+  reducerPath: "shazamCoreApiV2",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "https://shazam-core.p.rapidapi.com/v2",
+    prepareHeaders: (headers) => {
+      headers.set(
+        "X-RapidAPI-Key",
+        "fc33dc1a41msh998c2c6e14ac90bp197f08jsn0eedd98899d0"
+      );
+      headers.set("X-RapidAPI-Host", "shazam-core.p.rapidapi.com");
+
+      return headers;
+    },
+  }),
+  endpoints: (builder) => ({
+    getSongDetails: builder.query({
+      query: ({ songid }) => `/tracks/details?track_id=${songid}`,
+    }),
+  }),
+});
+
+export const { useGetTopChartsQuery, useGetSongRelatedQuery } = shazamCoreApi;
+export const { useGetSongDetailsQuery } = shazamCoreApiV2;
